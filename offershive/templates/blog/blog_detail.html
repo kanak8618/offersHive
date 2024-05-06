@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block title %}Blog-detail{% endblock %}
+{% block content %}
+{% load static %}
+
+         <!-- news-detalis-area-start -->
+        <div class="news-detalis-area mt-120 mb-1">
+            <div class="container">
+               <div class="row">
+                  <div class="col-xl-12 col-lg-8">
+                        {% for i in post %}
+                        <div class="news-detalis-content mb-50">
+                            <ul class="d-flex justify-content-end blog-meta mb-20">
+                                <li><i class="fal fa-tag"></i> {{i.Tags}}</li>
+                                <li><i class="fal fa-calendar-alt"></i> {{i.date}}</li>
+                            </ul>
+                            <div class="news-thumb mt-30">
+                                <img src="/{{i.image}}" alt="blog" class="img-fluid" style="height:500px;">
+                            </div>
+                            <h4 class="news-title mt-60">{{i.blog_title}}</h4>
+                            <div class="blog-inner news-title-2 mt-30">
+                               <p>{{i.Description|safe}}</p>
+                            </div>
+                            <div class="news-quote-area mt-55 text-center">
+                               <i class="fas fa-quote-left"></i>
+                               <h5 class="news-quote-title mt-25">{{i.quots}}</h5>
+                               <span class="founder-title">Written by - {{i.writer}}</span>
+                            </div>
+                            <div class="news-info d-sm-flex align-items-center justify-content-between mt-50 mb-50">
+                               <div class="news-tag">
+                                 <h6 class="tag-title mb-25">Releted Tag</h6>
+                                  <a href="">{{i.Category}}</a>
+                                  <a href="">{{i.Tags}}</a>
+                                  <a href="">{{i.instafeed}}</a>
+                               </div>
+                               <div class="news-share">
+                                  <h6 class="tag-title mb-25">Social Share</h6>
+                                  <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                  <a href="#"><i class="fab fa-twitter"></i></a>
+                                  <a href="#"><i class="fab fa-typo3"></i></a>
+                                  <a href="#"><i class="fab fa-tumblr"></i></a>
+                                  <a href="#"><i class="fal fa-share-alt"></i></a>
+                               </div>
+                            </div>
+
+                            <div class="news-author mt-60">
+                                <div class="news-author-info">
+                                    <span>Kanak Prajapati - Founder Of offersHive.com</span>
+                                    <h6 class="author-title">Popular Feeds</h6>
+
+                                    <div class="row">
+                                        {% for i in popular %}
+                                        <div class="col-xl-6">
+                                            <div class="single-features-item b-radius-2 mb-20" style="background:#F4F5F7;">
+                                                <div class="swiper-slide row g-0 align-items-center">
+                                                    <div class="col-4">
+                                                        <div class="features-thum">
+                                                            <div class="features-product-image w-img">
+                                                                <a href="{{i.get_absolute_url}}"><img src="/{{i.image}}" alt="Popular Blog" class="b-radius-2" style="height:90px"></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-8">
+                                                        <div class="product__content product__content-d product__content-d ml-5">
+                                                            <h6><a href="{{i.get_absolute_url}}">{{i.blog_title|truncatewords:10}}</a></h6>
+                                                            <span class="author mb-5">posted by <a href="">{{i.writer}}</a></span>
+                                                            <div class="post-readmore">
+                                                                <a href="{{i.get_absolute_url}}"> Read More... <span class="icon"></span></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        {% endfor %}
+                  </div>
+                  <div class="col-xl-4 col-lg-4">
+                     <div class="news-sidebar pl-10">
+                        <div class="row">
+
+                        </div>
+                    </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!-- news-detalis-area-end  -->
+        <!-- cta-area-start -->
+        {% include 'includes/cta-area.html' %}
+        <!-- cta-area-end -->
+
+{% endblock %}

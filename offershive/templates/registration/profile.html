@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block title %}My-Profile{% endblock %}
+{% block content %}
+{% load static %}
+
+    <!-- page-banner-area-start -->
+    <div class="page-banner-area page-banner-height-2" data-background="{% static 'assets/img/banner/page-banner-4.jpg' %}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="page-banner-content text-center">
+                            <h4 class="breadcrumb-title">My Profile</h4>
+                            <div class="breadcrumb-two">
+                                <nav>
+                                   <nav class="breadcrumb-trail breadcrumbs">
+                                      <ul class="breadcrumb-menu">
+                                         <li class="breadcrumb-trail">
+                                            <a href="{% url 'home' %}"><span>Home</span></a>
+                                         </li>
+                                         <li class="trail-item">
+                                            <span>My Profile</span>
+                                         </li>
+                                      </ul>
+                                   </nav>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- page-banner-area-end -->
+
+    <!-- Card -->
+    <div class="account-area mt-70 md-70">
+              <div class="container" >
+                  {% include 'includes/message.html' %}
+                  <h3 class="display-4 md-4">Update Your Profile</h3> <hr>
+                <form method="post" action="{% url 'profile_update' %}">
+                {% csrf_token %}
+                  <div class="row">
+                        <div class="col">
+                            <div class="form-group mb-4">
+                              <label>First Name</label>
+                             <input type="text" class="form-control"  placeholder="Enter First Name" name="first_name" value="{{user.first_name}}">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group mb-4">
+                              <label>Last Name</label>
+                              <input type="text" class="form-control" placeholder="Enter Last Name" name="last_name" value="{{user.last_name}}">
+                            </div>
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col">
+                             <div class="form-group mb-4">
+                                <label>Email address</label>
+                                <input type="email" class="form-control" placeholder="Enter Email" name="email" value="{{user.email}}" readonly>
+                             </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group mb-4">
+                               <label>Username</label>
+                               <input type="text" class="form-control" placeholder="Enter Username" name="username" value="{{user.username}}" readonly>
+                            </div>
+                        </div>
+                      <div class="col-12">
+                            <div class="form-group mb-4">
+                               <label>Password</label>
+                               <input type="password" class="form-control" placeholder="Fill Only If You Want To Change Password" name="password">
+                            </div>
+                        </div>
+                  </div>
+                  <button type="submit" class="btn btn-warning mb-4 mr-5" style="width:200px;">Update Profile </button>
+                  <a href="{% url 'logout' %}" class="btn btn-danger mb-4 ml-5 rounded" style="width:200px;">Logout </a>
+                </form>
+
+              </div>
+            </div>
+
+
+{% endblock %}

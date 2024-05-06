@@ -1,0 +1,173 @@
+{% load static %}
+<!-- header-start -->
+    <header class="header d-blue-bg">
+        <div class="header-top">
+            <div class="container">
+                <div class="header-inner">
+                    <div class="row align-items-center">
+                        <div class="col-xl-6 col-lg-7">
+                            <div class="header-inner-start">
+
+                                <div class="support d-none d-sm-block">
+                                    {% if user.is_authenticated %}
+                                        <p>Welcome
+                                            {% if user.first_name == "" %}
+                                                {{user.email}}
+                                            {% else %}
+                                                {{user.first_name}} {{user.last_name}}
+                                            {% endif %}
+                                        </p>
+                                    {% else %}
+                                        <p>Please do login first...</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-5 d-none d-lg-block">
+                            <div class="header-inner-end text-md-end">
+                                <div class="ovic-menu-wrapper">
+                                    <ul>
+                                        {% if user.is_authenticated %}
+                                            <li><a href="{% url 'track_order' %}">Order Tracking</a></li>
+                                        {% else %}
+                                            <li><a href="{% url 'signin' %}">SignIn</a></li>
+                                        {% endif %}
+                                        <li><a href="{% url 'faqs' %}">FAQs</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-mid">
+            <div class="container">
+                <div class="heade-mid-inner">
+                    <div class="row align-items-center">
+                        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-4">
+                            <div class="header__info">
+                                <div class="logo">
+                                    <a href="{% url 'home' %}" class="logo-image"><img src="{% static 'assets/img/logo/logo 1.png' %}" alt="logo"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-5 col-lg-4 d-none d-lg-block">
+                            <div class="header__search">
+                                <form action="#">
+                                    <div class="header__search-box">
+                                        <input class="search-input" type="text" placeholder="I'm shopping for...">
+                                        <button class="button" type="submit"><i class="far fa-search"></i></button>
+                                    </div>
+                                    <div class="header__search-cat">
+                                        <select>
+                                            <option>All Categories</option>
+                                            <option>Best Seller Products</option>
+                                            <option>Top 10 Offers</option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    {% include 'includes/model.html' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header__bottom">
+            <div class="container">
+                <div class="row g-0 align-items-center">
+                    <div class="col-lg-3">
+                        <div class="cat__menu-wrapper side-border d-none d-lg-block">
+                            <div class="cat-toggle">
+                                <button type="button" class="cat-toggle-btn cat-toggle-btn-1"><i class="fal fa-bars"></i> Shop by department</button>
+                                <div class="cat__menu">
+                                    <nav id="mobile-menu" style="display: block;">
+                                        <ul>
+                                            {% for i in main_category %}
+                                            <li>
+                                                <a href="{% url 'shop' %}">{{i.name}} <i class="far fa-angle-down"></i></a>
+                                                <ul class="mega-menu">
+                                                   {% for cat in i.category_set.all %}
+                                                    <li><a href="{% url 'shop' %}"  style="color:orange;">{{cat.name}}</a>
+                                                        <ul class="mega-item">
+                                                            {% for sub in cat.sub_category_set.all %}
+                                                            <li><a href="{% url 'shop' %}">{{sub.name}}</a></li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </li>
+                                            {% endfor %}
+
+                                            <!--<li><a href="shop.html">Health &amp; Beauty</a></li>-->
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-3">
+                      <div class="header__bottom-left d-flex d-xl-block align-items-center">
+                        <div class="side-menu d-lg-none mr-20">
+                          <button type="button" class="side-menu-btn offcanvas-toggle-btn"><i class="fas fa-bars"></i></button>
+                        </div>
+                        <div class="main-menu d-none d-lg-block">
+                            <nav>
+                                <ul>
+                                    {% url 'home' as url %}<li><a href="{{ url }}" class="{% if request.path == url %}active{% endif %}">Home</a></li>
+                                    {% url 'shop' as url %}<li><a href="{{ url }}" class="{% if request.path == url %}active{% endif %}">Shop</a></li>
+                                    {% url 'about_us' as url %}<li><a href="{{ url }}" class="{% if request.path == url %}active{% endif %}">About Us</a></li>
+                                    {% url 'contact_us' as url %}<li><a href="{{ url }}" class="{% if request.path == url %}active{% endif %}">Contact Us</a></li>
+                                    {% if user.is_authenticated %}
+                                        {% url 'my_order' as url %}<li><a href="{{ url }}" class="{% if request.path == url %}active{% endif %}">My-Orders</a></li>
+                                    {% endif %}
+                                    {% url 'blog' as url %}<li><a href="{{ url }}" class="{% if request.path == url %}active{% endif %}">Blog</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-9">
+                        <div class="shopeing-text text-sm-end">
+                            <p><marquee onmouseover="stop()" onmouseout="start()" width="100%" direction="left" scrolldelay="200" style="margin-top:5px">
+                                <a href="">FREE FREE FREE free delivery when you shopping more then ₹500 on offersHive.com</a>
+                            </marquee></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+<!-- header-end -->
+
+<!-- offcanvas area start -->
+      <div class="offcanvas__area">
+                <div class="offcanvas__wrapper">
+                <div class="offcanvas__close">
+                    <button class="offcanvas__close-btn" id="offcanvas__close-btn">
+                        <i class="fal fa-times"></i>
+                    </button>
+                </div>
+                <div class="offcanvas__content">
+                    <div class="offcanvas__logo mb-40">
+                        <a href="">
+                        <img src="{% static 'assets/img/logo/logo 1.png' %}" alt="logo">
+                        </a>
+                    </div>
+                    <div class="offcanvas__search mb-25">
+                        <form action="#">
+                            <input type="text" placeholder="What are you searching for?">
+                            <button type="submit" ><i class="far fa-search"></i></button>
+                        </form>
+                    </div>
+                    <div class="mobile-menu fix"></div>
+                    <div class="offcanvas__action">
+
+                    </div>
+                </div>
+                </div>
+            </div>
+      <div class="body-overlay"></div>
+<!-- offcanvas area end -->

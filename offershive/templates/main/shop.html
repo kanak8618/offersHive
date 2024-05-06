@@ -1,0 +1,457 @@
+{% extends 'base.html' %}
+{% block title %}Shop{% endblock %}
+{% load static %}
+{% load product_tags %}
+{% block content %}
+
+{% block script %}
+<script>
+$(document).ready(function(){
+	$(".filter-checkbox").on('click', function(){
+		var filter_object={};
+		$(".filter-checkbox").each(function(index,ele){
+			var filter_value=$(this).val();
+			var filter_key=$(this).data('filter');
+			console.log(filter_key,filter_value);
+			filter_object[filter_key]=Array.from(document.querySelectorAll('input[data-filter='+filter_key+']:checked')).map(function(el){
+			 	return el.value;
+			});
+		});
+		$.ajax({
+			url:'{% url 'filter-data' %}',
+			data:filter_object,
+			dataType:'json',
+			success:function(res){
+				$("#filteredProducts").html(res.data);
+			}
+		});
+		$.ajax({
+			url:'{% url 'filter-product' %}',
+			data:filter_object,
+			dataType:'json',
+			success:function(res){
+				$("#filteredProducts1").html(res.data);
+			}
+		});
+	});
+});
+</script>
+
+<style>
+    input[type=range]{
+   -webkit-appearance: none;
+   width:100%;
+   }
+   input[type=range]::-webkit-slider-runnable-track {
+   width: 1000px;
+   height: 5px;
+   background: #FCBE00;
+   border: none;
+   border-radius: 3px;
+   }
+   input[type=range]::-webkit-slider-thumb {
+   -webkit-appearance: none;
+   border: none;
+   height: 16px;
+   width: 16px;
+   border-radius: 50%;
+   background: goldenrod;
+   margin-top: -5px;
+   }
+   input[type=range]:focus {
+   outline: none;
+   }
+   input[type=range]:focus::-webkit-slider-runnable-track {
+   background: #FCBE00;
+   }
+</style>
+{% endblock %}
+
+
+        <!-- page-banner-area-start -->
+        <div id="carouselExampleCaptions" class="page-banner-area page-banner-height carousel-light carousel slide" data-bs-ride="carousel" data-background="{% static 'assets/img/bg/bg1.gif' %}">
+            <div class="container">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                </div>
+                <div class="row carousel-inner">
+                    <div  class="page-banner-content text-center mt-70 mb-50" >
+                        <div class="col-xl-12">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <h3>First slide label</h3>
+                                    <p>Some representative placeholder content for the first slide.</p>
+                                </div>
+                                <div class="carousel-item">
+                                    <h3>Second slide label</h3>
+                                    <p>Some representative placeholder content for the second slide.</p>
+                                </div>
+                                <div class="carousel-item">
+                                    <h3>Third slide label</h3>
+                                    <p>Some representative placeholder content for the third slide.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+        <!-- page-banner-area-end -->
+
+        <!-- shop-area-start -->
+        <div class="shop-area mb-20">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-3 col-lg-4">
+                        <div class="product-widget mb-30">
+                            <h5 class="pt-title">Product categories</h5>
+                            <div class="widget-category-list mt-20">
+                                <form action="#">
+                                    {% for i in category %}
+                                    <div class="single-widget-category">
+                                       <input type="checkbox" data-filter="category" id="{{i.id}}" value="{{i.id}}" class="filter-checkbox">
+                                       <label for="{{i.id}}">{{i.name}} <span>({{i.product_set.all.count}})</span></label>
+                                    </div>
+                                    {% endfor %}
+                                </form>
+                            </div>
+                        </div>
+                        <div class="product-widget mb-30">
+                           <h5 class="pt-title">Filter By Price</h5>
+                           <div class="price__slider mt-30">
+                              <input type="range" class="multi-range success" style="color:red;" value="{{FilterPrice}}" min="{{min_price.price__min}}" max="{{max_price.price__max}}" id="rangeInput" oninput="maxPrice.value=this.value" width="400px;"/>
+                              <div>
+                                 <form action="" class="s-form mt-20" method="get">
+                                    <b>₹</b><input type="number" id="maxPrice" readonly="" name="FilterPrice" onkeyup="rangeInput.value=this.value" value={{FilterPrice}}{{minMaxPrice.price__min}}>
+                                    <button type="submit" id="priceFilterBtn" class="tp-btn-square-lg">Filter</button>
+                                 </form>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="product-widget mb-30">
+                            <h5 class="pt-title">Choose Color</h5>
+                            <div class="product__color mt-20">
+                                <ul>
+                                    {% for i in color %}
+                                   <li>
+                                      <a href="?colorID={{i.id}}" class="black" style="background-color:{{i.code}}"></a>
+                                   </li>
+                                    {% endfor %}
+                                </ul>
+                          </div>
+                        </div>
+                        <div class="product-widget mb-30">
+                            <h5 class="pt-title">Choose Brand</h5>
+                            <div class="widget-category-list mt-20">
+                                <form action="#">
+                                    {% for i in brand %}
+                                    <div class="single-widget-category">
+                                        <input type="checkbox" data-filter="brand" id="brand-{{i.id}}" value="{{i.id}}" class="filter-checkbox">
+                                        <label for="brand-{{i.id}}">{{i.name}} <span>({{i.product_set.all.count}})</span></label>
+                                    </div>
+                                    {% endfor %}
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-9 col-lg-8">
+                        <div id="carouselExampleDark" class="carousel carousel-light slide" data-bs-ride="carousel">
+                            <div class="carousel-indicators">
+                                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                            </div>
+                            <div class="carousel-inner">
+                                {% for shop in shop_slide %}
+                                    {% if forloop.counter == 1 %}
+                                        <div class="carousel-item active" data-bs-interval="10000">
+                                    {% else %}
+                                        <div class="carousel-item" data-bs-interval="10000">
+                                    {% endif %}
+                                        <a href="{{shop.Link}}"><img src="{{shop.Image}}" alt=""></a>
+<!--                                        <div class="carousel-caption d-none d-md-block">-->
+<!--                                            <h5>{{shop.label}}</h5>-->
+<!--                                            <p>{{shop.quots}}</p>-->
+<!--                                        </div>-->
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div> <br>
+
+                            <div class="product-lists-top">
+                                <div class="product__filter-wrap">
+                                    <div class="row align-items-center">
+                                        <div class="col-xxl-2 col-xl-2 col-lg-6 col-md-6">
+                                            <div class="product__filter d-sm-flex align-items-center">
+                                                <div class="product__col">
+                                                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                                        <li class="nav-item" role="presentation">
+                                                          <button class="nav-link active" id="FourCol-tab" data-bs-toggle="tab" data-bs-target="#FourCol" type="button" role="tab" aria-controls="FourCol" aria-selected="true">
+                                                            <i class="fal fa-th"></i>
+                                                          </button>
+                                                        </li>
+                                                        <li class="nav-item" role="presentation">
+                                                          <button class="nav-link" id="FiveCol-tab" data-bs-toggle="tab" data-bs-target="#FiveCol" type="button" role="tab" aria-controls="FiveCol" aria-selected="false">
+                                                            <i class="fal fa-list"></i>
+                                                          </button>
+                                                        </li>
+                                                      </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xxl-10 col-xl-10 col-lg-6 col-md-6">
+                                            <div class="product__filter-right d-flex align-items-center justify-content-md-left">
+                                                <marquee onmouseover="stop()" onmouseout="start()" width="100%" direction="right">
+                                                    <a href="">This is a offersHive.com Offer section This is a offersHive.com Offer section </a>
+                                                </marquee>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                            </div>
+                            <div class="tab-content" id="productGridTabContent">
+                                <div class="tab-pane fade  show active" id="FourCol" role="tabpanel" aria-labelledby="FourCol-tab">
+                                    <div class="tp-wrapper">
+                                        <div class="row g-0" id="filteredProducts">
+                                            {% for i in product %}
+                                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                                                <div class="product__item product__item-d">
+                                                    <div class="product__thumb fix">
+                                                        <div class="product-image w-img">
+                                                            <a href="{{i.get_absolute_url}}">
+                                                                <img src="{{i.featured_image}}" alt="product" style="height:200px;">
+                                                            </a>
+                                                        </div>
+                                                        <div class="product-action">
+                                                            <a href="#" class="icon-box icon-box-1" data-bs-toggle="modal" data-bs-target="#productModalId-{{forloop.counter}}">
+                                                                <i class="fal fa-eye"></i>
+                                                                <i class="fal fa-eye"></i>
+                                                            </a>
+                                                            <a href="#" class="icon-box icon-box-1">
+                                                                <i class="fal fa-heart"></i>
+                                                                <i class="fal fa-heart"></i>
+                                                            </a>
+                                                            <a href="#" class="icon-box icon-box-1">
+                                                                <i class="fal fa-layer-group"></i>
+                                                                <i class="fal fa-layer-group"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product__content-3">
+                                                        <h6><a href="product-details.html">{{i.product_name|truncatechars:35}}</a></h6>
+                                                        <div class="price mb-10">
+                                                            <span>₹ {% call_sellprice i.price i.Discount %}</span>&nbsp;&nbsp;<del>{{i.price}}</del>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product__add-cart-s text-center">
+                                                        <a href="{% url 'cart_add' i.id %}" class="cart-btn d-flex mb-10 align-items-center justify-content-center w-100">Add to Cart</a>
+                                                        <a href="{{i.get_absolute_url}}" class="wc-checkout d-flex align-items-center justify-content-center w-100" data-bs-toggle="modal" data-bs-target="#productModalId">Quick View</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="FiveCol" role="tabpanel" aria-labelledby="FiveCol-tab">
+                                    <div class="tp-wrapper-2">
+                                        <div class="single-item-pd" id="filteredProducts1">
+                                            {% for i in product %}
+                                            <div class="row align-items-center">
+                                                <div class="col-xl-9">
+                                                    <div class="single-features-item single-features-item-df b-radius mb-20">
+                                                        <div class="row  g-0 align-items-center">
+                                                            <div class="col-md-4">
+                                                                <div class="features-thum">
+                                                                    <div class="features-product-image w-img">
+                                                                        <a href="{{i.get_absolute_url}}"><img src="{{i.featured_image}}" alt="" style="height:150px; width:150px"></a>
+                                                                    </div>
+                                                                    <div class="product__offer">
+                                                                        <span class="discount">{{i.Discount}}%</span>
+                                                                    </div>
+                                                                    <div class="product-action">
+                                                                        <a href=" " class="icon-box icon-box-1" data-bs-toggle="modal" data-bs-target="#productModalId-{{forloop.counter}}">
+                                                                            <i class="fal fa-eye"></i>
+                                                                            <i class="fal fa-eye"></i>
+                                                                        </a>
+                                                                        <a href=" " class="icon-box icon-box-1">
+                                                                            <i class="fal fa-heart"></i>
+                                                                            <i class="fal fa-heart"></i>
+                                                                        </a>
+                                                                        <a href=" " class="icon-box icon-box-1">
+                                                                            <i class="fal fa-layer-group"></i>
+                                                                            <i class="fal fa-layer-group"></i>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <div class="product__content product__content-d">
+                                                                    <h6><a href="{{i.get_absolute_url}}">{{i.product_name}}</a></h6>
+                                                                    <div class="features-des">
+                                                                        <ul>
+                                                                            <li><a href="{{i.get_absolute_url}}">{{i.Product_information|safe|truncatewords:35}}</a></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3">
+                                                    <div class="product-stock mb-15">
+                                                        <h5>Availability: <span> {{i.Availability}} in stock</span></h5>
+                                                        <h6><span>₹ {% call_sellprice i.price i.Discount %}</span>&nbsp;&nbsp;<del>{{i.price}}</del></h6>
+                                                    </div>
+                                                    <div class="stock-btn ">
+                                                        <a href="{% url 'cart_add' i.id %}" class="cart-btn d-flex mb-10 align-items-center justify-content-center w-100">Add to Cart</a>
+                                                        <a href="{{i.get_absolute_url}}" class="wc-checkout d-flex align-items-center justify-content-center w-100" data-bs-toggle="modal" data-bs-target="#productModalId">Quick View</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tp-pagination text-center">
+                                <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="basic-pagination pt-30 pb-30">
+                                        <nav>
+                                           <ul>
+
+                                               <li><a href="{% if product.has_previous %}?page={{ product.previous_page_number }}{% endif %}"><i class="fal fa-angle-double-left"></i></a></li>
+
+                                               <li><a href="?page=1">1</a></li>...
+                                               <li><a href="" class="active">{{ product.number }}</a></li>...
+                                               <li><a href="?page={{ product.paginator.num_pages }}">{{ product.paginator.num_pages }}</a></li>
+
+                                               <li><a href="{% if product.has_next %}?page={{ product.next_page_number }}{% endif %}"><i class="fal fa-angle-double-right"></i></a></li>
+
+                                           </ul>
+                                         </nav>
+                                     </div>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            </div>
+        </div>
+        <!-- shop-area-end -->
+
+    <!-- shop modal start -->
+    {% for i in product %}
+    <div class="modal fade" id="productModalId-{{forloop.counter}}" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered product__modal" role="document">
+                <div class="modal-content">
+                    <div class="product__modal-wrapper p-relative">
+                        <div class="product__modal-close p-absolute">
+                            <button data-bs-dismiss="modal"><i class="fal fa-times"></i></button>
+                        </div>
+                        <div class="product__modal-inner">
+                            <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="product__modal-box">
+                                    <div class="tab-content" id="modalTabContent">
+                                        <div class="tab-pane fade show active" id="nav1" role="tabpanel" aria-labelledby="nav1-tab">
+                                            <div class="product__modal-img w-img">
+                                                <img src="{{i.product_image_set.first.Image_url}}" alt="">
+                                            </div>
+                                        </div>
+                                        {% for image in i.product_image_set.all %}
+                                            <div class="tab-pane fade show" id="nav{{image.id}}" role="tabpanel" aria-labelledby="nav{{image.id}}-tab">
+                                                <div class="product__modal-img w-img">
+                                                    <img src="{{image.Image_url}}" alt="">
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    <ul class="nav nav-tabs" id="modalTab" role="tablist">
+                                         {% for image in i.product_image_set.all %}
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="nav{{image.id}}-tab" data-bs-toggle="tab" data-bs-target="#nav{{image.id}}" type="button" role="tab" aria-controls="nav{{image.id}}" aria-selected="true">
+                                                    <img src="{{image.Image_url}}" alt="" style="width:85px; height:85px;">
+                                                </button>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="product__modal-content">
+                                    <h4><a href="">{{i.product_name}}</a></h4>
+                                    <div class="product__price">
+                                        <span>₹ {% call_sellprice i.price i.Discount %}</span>&nbsp;&nbsp;<del>{{i.price}}</del>
+                                    </div>
+                                    <div class="product__modal-des mt-20 mb-15">
+                                        <ul>
+                                            <li><a href="#">{{i.Product_information|safe|truncatewords:100}}</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="product__stock mb-20">
+                                        <span class="mr-10">Availability :</span>
+                                        <span>{{i.Availability}} in stock</span>
+                                    </div>
+                                    <div class="product__modal-form">
+                                        <form action="#">
+                                        <div class="pro-quan-area d-lg-flex align-items-center">
+                                            <div class="product-quantity mr-20 mb-25">
+                                                <div class="cart-plus-minus p-relative"><input type="text" value="1" /></div>
+                                            </div>
+                                            <div class="pro-cart-btn mb-25">
+                                                <a class="cart-btn" href="{% url 'cart_add' i.id %}">Add to cart</a>
+                                            </div>
+                                        </div>
+                                        </form>
+                                    </div>
+                                    <div class="product__stock mb-30">
+                                        <ul>
+                                            <li><a href="#">
+                                                <span class="sku mr-10">model Name:</span>
+                                                <span>{{i.model_Name}}</span></a>
+                                            </li>
+                                            <li><a href="#">
+                                                <span class="cat mr-10">Categories:</span>
+                                                <span>{{i.Categories}}</span></a>
+                                            </li>
+                                            <li><a href="#">
+                                                <span class="tag mr-10">Tags:</span>
+                                                <span>{{i.Tags}}</span></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    {% endfor %}
+    <!-- shop modal end -->
+
+{% endblock %}

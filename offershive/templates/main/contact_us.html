@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% block title %}Contact-us{% endblock %}
+{% block content %}
+{% load static %}
+
+         <!-- page-banner-area-start -->
+        <div id="carouselExampleCaptions" class="page-banner-area page-banner-height carousel-light carousel slide" data-bs-ride="carousel" data-background="{% static 'assets/img/bg/bg1.gif' %}">
+            <div class="container">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                </div>
+                <div class="row carousel-inner">
+                    <div  class="page-banner-content text-center mt-70 mb-50" >
+                        <div class="col-xl-12">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <h3>First slide label</h3>
+                                    <p>Some representative placeholder content for the first slide.</p>
+                                </div>
+                                <div class="carousel-item">
+                                    <h3>Second slide label</h3>
+                                    <p>Some representative placeholder content for the second slide.</p>
+                                </div>
+                                <div class="carousel-item">
+                                    <h3>Third slide label</h3>
+                                    <p>Some representative placeholder content for the third slide.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+            </div>
+        </div>
+        <!-- page-banner-area-end -->
+
+        <!-- location-area-start -->
+        <div class="location-area pt-70 pb-25 text-center">
+            <div class="container">
+                <div class="row mb-25">
+                    <div class="col-xl-12">
+                        <div class="abs-section-title text-center">
+                            <span>LOCATION STORE</span>
+                            <h4>Where We Are</h4>
+                            <p>The perfect way to enjoy brewing tea on low hanging fruit to identify. Duis autem vel eum iriure dolor in hendrerit <br> in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-3 col-lg-3 col-md-6">
+                        <div class="location-item mb-30">
+                            <div class="location-image w-img mb-20">
+                                <img src="{% static 'assets/img/location/location-1.jpg' %}" alt="">
+                            </div>
+                            <h6>128-MernShip Ahemdabad</h6>
+                            <div class="sm-item-loc sm-item-border mb-20">
+                                <div class="sml-icon mr-20">
+                                    <i class="fal fa-map-marker-alt"></i>
+                                </div>
+                                <div class="sm-content">
+                                    <span>Find us</span>
+                                    <p>128-MernShip,Iskon Circle,SG Highway,Ahemdabad-35062,Gujarat,India</p>
+                                </div>
+                            </div>
+                            <div class="sm-item-loc sm-item-border mb-20">
+                                <div class="sml-icon mr-20">
+                                    <i class="fal fa-phone-alt"></i>
+                                </div>
+                                <div class="sm-content">
+                                    <span>Call us</span>
+                                    <p><a href="">(+91) 123 456 7890</a></p>
+                                </div>
+                            </div>
+                            <div class="sm-item-loc mb-20">
+                                <div class="sml-icon mr-20">
+                                    <i class="fal fa-envelope"></i>
+                                </div>
+                                <div class="sm-content">
+                                    <span>Mail us</span>
+                                    <p><a href=""><span class="__cf_email__" data-cfemail="">[email protected]</span></a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-lg-3 col-md-6">
+                       <div class="container">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3608.0302023946797!2d71.65869287805113!3d22.173815361017613!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3958dc879d959097%3A0x98da17d2ed353662!2sGSRTC%20Bus%20Station%20-%20Botad!5e0!3m2!1sen!2sin!4v1692854107785!5m2!1sen!2sin" width="820" height="420" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                       </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- location-area-end -->
+
+
+
+        <!-- cta-area-start -->
+        {% include 'includes/cta-area.html' %}
+        <!-- cta-area-end -->
+
+{% endblock %}

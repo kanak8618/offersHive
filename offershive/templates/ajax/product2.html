@@ -1,0 +1,65 @@
+{% load product_tags %}
+{% load static %}
+{% if product|length < 1 %}
+
+    <h1 class="text-center m-5 ms-5" style="margin-left:270px;">Product Not Found</h1>
+    <img src="{% static 'assets/img/not-found.gif' %}"  style="height:75%; width:50%; margin-left:250px; ">
+
+{% else %}
+
+    {% for i in product %}
+        <div class="row align-items-center">
+                                            <div class="col-xl-9">
+                                                <div class="single-features-item single-features-item-df b-radius mb-20">
+                                                    <div class="row  g-0 align-items-center">
+                                                        <div class="col-md-4">
+                                                            <div class="features-thum">
+                                                                <div class="features-product-image w-img">
+                                                                    <a href="{{i.get_absolute_url}}"><img src="{{i.featured_image}}" alt="" style="height:150px; width:150px"></a>
+                                                                </div>
+                                                                <div class="product__offer">
+                                                                    <span class="discount">{{i.Discount}}%</span>
+                                                                </div>
+                                                                <div class="product-action">
+                                                                    <a href=" " class="icon-box icon-box-1" data-bs-toggle="modal" data-bs-target="#productModalId-{{forloop.counter}}">
+                                                                        <i class="fal fa-eye"></i>
+                                                                        <i class="fal fa-eye"></i>
+                                                                    </a>
+                                                                    <a href=" " class="icon-box icon-box-1">
+                                                                        <i class="fal fa-heart"></i>
+                                                                        <i class="fal fa-heart"></i>
+                                                                    </a>
+                                                                    <a href=" " class="icon-box icon-box-1">
+                                                                        <i class="fal fa-layer-group"></i>
+                                                                        <i class="fal fa-layer-group"></i>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-8">
+                                                            <div class="product__content product__content-d">
+                                                                <h6><a href="{{i.get_absolute_url}}">{{i.product_name}}</a></h6>
+                                                                <div class="features-des">
+                                                                    <ul>
+                                                                        <li><a href="{{i.get_absolute_url}}">{{i.Product_information|safe|truncatewords:35}}</a></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-3">
+                                                <div class="product-stock mb-15">
+                                                    <h5>Availability: <span> {{i.Availability}} in stock</span></h5>
+                                                    <h6><span>₹ {% call_sellprice i.price i.Discount %}</span>&nbsp;&nbsp;<del>{{i.price}}</del></h6>
+                                                </div>
+                                                <div class="stock-btn ">
+                                                    <a href="{% url 'cart_add' i.id %}" class="cart-btn d-flex mb-10 align-items-center justify-content-center w-100">Add to Cart</a>
+                                                    <a href="{{i.get_absolute_url}}" class="wc-checkout d-flex align-items-center justify-content-center w-100" data-bs-toggle="modal" data-bs-target="#productModalId">Quick View</a>
+                                                </div>
+                                            </div>
+                                        </div>
+    {% endfor %}
+
+{% endif %}

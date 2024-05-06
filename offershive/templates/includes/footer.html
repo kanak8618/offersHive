@@ -1,0 +1,130 @@
+{% load static %}
+ <!-- footer-start -->
+        <footer>
+            <div class="fotter-area d-dark-bg">
+                <div class="footer__top pt-70" style="margin-bottom:-10px">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xl-4 col-lg-6 order-last-md">
+                                <img src="{% static 'assets/img/logo/logo 1.png' %}" alt="logo" style="width:80%;">
+                                <hr style="width:88%">
+                                <div class="row">
+                                    <div>
+                                        <div class="footer__hotline d-flex align-items-center mb-10">
+                                            <div class="mr-15">
+                                                <i class="fal fa-map-marker-alt"></i>
+                                            </div>
+                                            <div class="text" style="margin-top:16px;">
+                                                <h4>128-MernShip, Iskon Circle, SG Highway,</h4>
+                                                <h4>Ahemdabad-35062, Gujarat,India</h4>
+                                            </div>
+                                        </div>
+                                        <div class="footer__hotline d-flex align-items-center mb-10">
+                                            <div class="mr-15">
+                                                <i class="fal fa-phone-alt"></i>
+                                            </div>
+                                            <div class="text"><br>
+                                                <h4>Got Question? Call us 24/7!</h4>
+                                                <span><a href="tel:91-9537442486">(+91) 9537442486</a></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-7 col-lg-8 order-first-md">
+                                <div class="footer__top-left">
+                                    <div class="row">
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                            <div class="row">
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                                    <div class="footer__widget">
+                                                        <div class="footer__widget-title">
+                                                            <h4>Quick Links</h4>
+                                                        </div>
+                                                        <div class="footer__widget-content">
+                                                            <div class="footer__link">
+                                                                <ul>
+                                                                    <li><a href="{% url 'shop' %}">Products</a></li>
+                                                                    {% if user.is_authenticated %}
+                                                                        <li><a href="{% url 'cart_detail' %}">Shopping Cart</a></li>
+                                                                        <li><a href="{% url 'my_order' %}">My-Order</a></li>
+                                                                        <li><a href="{% url 'track_order' %}">Order Tracking</a></li>
+                                                                    {% else %}
+                                                                        <li><a href="{% url 'faqs' %}">FAQs</a></li>
+                                                                        <li><a href="{% url 'contact_us' %}">Contact-Us</a></li>
+                                                                        <li><a href="{% url 'about_us' %}">About-Us</a></li>
+                                                                    {% endif %}
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                                    <div class="footer__widget">
+                                                        <div class="footer__widget-title">
+                                                            <h4>My Account</h4>
+                                                        </div>
+                                                        <div class="footer__widget-content">
+                                                            <div class="footer__link">
+                                                                <ul>
+                                                                    {% if user.is_authenticated %}
+                                                                        <li><a href="{% url 'profile' %}">My-Profile</a></li>
+                                                                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                                                                    {% else %}
+                                                                        <li><a href="{% url 'signin' %}">Register</a></li>
+                                                                        <li><a href="{% url 'login' %}">Login</a></li>
+                                                                    {% endif %}
+                                                                    <li><a href="{% url 'admin:index' %}">Admin Login</a></li>
+                                                                    <li><a href="{% url 'blog' %}">Blog</a></li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                            <div class="">    <!-- class = "footer__widget" -->
+                                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3608.0302023946797!2d71.65869287805113!3d22.173815361017613!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3958dc879d959097%3A0x98da17d2ed353662!2sGSRTC%20Bus%20Station%20-%20Botad!5e0!3m2!1sen!2sin!4v1692854107785!5m2!1sen!2sin" width="400" height="250" style="border:1;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-7 col-lg-6 col-sm-6">
+                                            <div class="footer__widget">
+                                                <div class="footer__widget-content">
+                                                    <div class="text-center mr-60" style="margin-top:-40px;">
+                                                         <div class="cta-item cta-item-d mb-30">
+                                                            <div class="cta-social">
+                                                                <div class="social-icon">
+                                                                    <a href="#" class="facebook"><i class="fab fa-facebook-f"></i></a>
+                                                                    <a href="#" class="twitter"><i class="fab fa-twitter"></i></a>
+                                                                    <a href="#" class="youtube"><i class="fab fa-youtube"></i></a>
+                                                                    <a href="#" class="linkedin"><i class="fab fa-linkedin-in"></i></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer__bottom">
+                    <div class="container">
+                        <div class="footer__bottom-content pt-15 pb-5">
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="copy-right-area text-center">
+                                        <p>Copyright © <span>CodePy.X</span> All Rights Reserved. Powered by <a href="#"><span class="main-color">offersHive</span></a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+<!-- footer-end -->

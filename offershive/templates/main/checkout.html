@@ -1,0 +1,323 @@
+{% extends 'base.html' %}
+{% block title %}Checkout{% endblock %}
+{% block content %}
+{% load static %}
+{% load cart_tag %}
+
+<script>
+(function () {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  var forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
+</script>
+
+        <!-- page-banner-area-start -->
+        <div class="page-banner-area page-banner-height-2" data-background="{% static 'assets/img/bg/bg1.gif' %}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="page-banner-content text-center">
+                            <h4 class="breadcrumb-title">Checkout</h4>
+                            <div class="breadcrumb-two">
+                                <nav>
+                                   <nav class="breadcrumb-trail breadcrumbs">
+                                      <ul class="breadcrumb-menu">
+                                         <li class="breadcrumb-trail">
+                                            <a href="{% url 'home' %}"><span>Home</span></a>
+                                         </li>
+                                         <li class="trail-item">
+                                            <span>Checkout</span>
+                                         </li>
+                                      </ul>
+                                   </nav>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- page-banner-area-end -->
+
+        <!-- coupon-area-start -->
+        <section class="coupon-area pt-120 pb-30">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="coupon-accordion">
+                            <!-- ACCORDION START -->
+                            <h3>Instruction for coupon <span id="showlogin">Click here to read</span></h3>
+                            <div id="checkout-login" class="coupon-content">
+                                <div class="coupon-info">
+                                    <p class="coupon-text">Quisque gravida turpis sit amet nulla posuere lacinia. Cras sed est sit amet ipsum luctus.</p>
+                                </div>
+                            </div>
+                            <!-- ACCORDION END -->
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="coupon-accordion">
+                            <!-- ACCORDION START -->
+                            <h3>Have a coupon? <span id="showcoupon">Click here to enter your code</span></h3>
+                            <div id="checkout_coupon" class="coupon-checkout-content">
+                                <div class="coupon-info">
+                                    <form method="GET">
+                                        <div class="coupon">
+                                            <input id="coupon_code" class="input-text" name="coupon_code" placeholder="Coupon code" type="text">
+                                            <button class="tp-btn-h1" type="submit">Apply coupon</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- ACCORDION END -->
+                        </div>
+                    </div>
+                    {% if valid_coupon %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>{{coupon.code}}</strong> - {{valid_coupon}}.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% elif invalid_coupon %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>{{coupon_code}}</strong> - {{invalid_coupon}}.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+        <!-- coupon-area-end -->
+
+        <!-- checkout-area-start -->
+        <section class="checkout-area pb-85">
+            <div class="container">
+                <form method="post" action="#">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="checkbox-form">
+                                <h3>Billing Details</h3>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="country-select">
+                                            <label for="validationCustom01" class="form-label">Country <span class="required">*</span></label>
+                                            <select id="validationCustom01" class="form-control" name="country" style="display: none;" required>
+                                                <option value="volvo">India</option>
+                                                <option value="saab">Algeria</option>
+                                                <option value="mercedes">Afghanistan</option>
+                                            </select>
+                                            <div class="nice-select" tabindex="0">
+                                                <span class="current">India</span>
+                                                <ul class="list">
+                                                    <li data-value="volvo" class="option selected">India</li>
+                                                    <li data-value="saab" class="option">Algeria</li>
+                                                    <li data-value="mercedes" class="option">Afghanistan</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div  class="checkout-form-list">
+                                            <label class="form-label">First Name <span class="required">*</span></label>
+                                            <input type="text" class="form-control" name="first_name" value="{{user.first_name}}" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="checkout-form-list">
+                                            <label class="form-label">Last Name <span class="required">*</span></label>
+                                            <input type="text" class="form-control" name="last_name" value="{{user.last_name}}" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="checkout-form-list">
+                                            <label for="validationCustom02" class="form-label">Address <span class="required">*</span></label>
+                                            <input type="text" id="validationCustom02" class="form-control" name="address1" placeholder="Street address" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="checkout-form-list">
+                                            <input type="text" name="address2" placeholder="Apartment, suite, unit etc. (optional)">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="checkout-form-list">
+                                            <label for="validationCustom03" class="form-label">Town / City <span class="required">*</span></label>
+                                            <input type="text" class="form-control" id="validationCustom03" name="city" placeholder="Town / City" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="checkout-form-list">
+                                            <label for="validationCustom04" class="form-label">State <span class="required">*</span></label>
+                                            <input type="text" class="form-control" id="validationCustom04" name="state" placeholder="State" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="checkout-form-list">
+                                            <label for="validationCustom05" class="form-label">Postcode / Zip <span class="required">*</span></label>
+                                            <input type="text" pattern="[0-9]{6}" class="form-control" id="validationCustom05" name="postcode" placeholder="Postcode / Zip" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="checkout-form-list">
+                                            <label for="validationCustom06" class="form-label">Phone <span class="required">*</span></label>
+                                            <input type="tel" pattern=".{10}" class="form-control" id="validationCustom06" name="phone" placeholder="Mobile" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="checkout-form-list">
+                                            <label class="form-label" class="form-label">Email Address <span class="required">*</span></label>
+                                            <input type="email" class="form-control" name="email" value="{{user.email}}" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="checkout-form-list">
+                                            <label class="form-label" class="form-label">UserName <span class="required">*</span></label>
+                                            <input type="text" class="form-control" name="username" value="{{user.username}}" readonly>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="order-notes">
+                                        <div class="checkout-form-list">
+                                            <label>Order Notes</label>
+                                            <textarea id="checkout-mess" cols="30" rows="10" name="order_comments" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="your-order mb-30 ">
+                                <h3>Your order</h3>
+                                <div class="your-order-table table-responsive">
+                                    <table class="cart-page-total">
+                                        <thead>
+                                            <tr>
+                                                <th class="product-name">Product</th>
+                                                <th class="product-total">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="cart_item">
+                                                <td class="product-name">Tax</td>
+                                                <td class="product-total"><span class="amount">₹{{tax}}</span></td>
+                                            </tr>
+                                            <tr class="cart_item">
+                                                <td class="product-name">Packing Cost</td>
+                                                <td class="product-total"><span class="amount">₹{{packing_cost}}</span></td>
+                                            </tr>
+                                            <tr class="cart_item">
+                                                <th >Cart Subtotal</th>
+                                                <td><span class="amount">₹{{cart_total_amount}}</span></td>
+                                            </tr>
+                                            <tr class="cart_item">
+                                                {% if valid_coupon %}
+                                                    <td class="product-name text-success">Coupon Code Discount</td>
+                                                    <td class="product-total text-success"><span class="amount">{{coupon.discount}}%</span></td>
+                                                {% endif %}
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr class="cart-page-total">
+                                                {% if cart_total_amount > 500 %}
+                                                    <th>Delivery Charg</th> <td>Free</td>
+                                                    <tr class="order-total">
+                                                        <th class="text-danger">Order Total</th> <td><span class="amount text-danger" id="total1"> ₹{{cart_total_amount|add:packing_cost|add:tax}}</span></td>
+                                                    </tr>
+                                                {% elif cart_total_amount == 0 %}
+                                                    <th>Delivery Charg</th> <td>₹0.0</td>
+                                                    <tr class="order-total">
+                                                        <th class="text-danger">Order Total</th> <td><span class="amount text-danger"> ₹{{cart_total_amount}}</span></td>
+                                                    </tr>
+                                                {% else %}
+                                                    <th>Delivery Charg</th> <td>₹120</td>
+                                                    <tr class="order-total">
+                                                        <th class="text-danger">Order Total</th> <td><span class="amount text-danger" id="total"> ₹{{cart_total_amount|add:packing_cost|add:tax|add:120}}</span></td>
+                                                    </tr>
+                                                {% endif %}
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+
+                                <div class="payment-method">
+                                    <div class="accordion" id="checkoutAccordion">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="checkoutOne">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#bankOne" aria-expanded="true" aria-controls="bankOne">
+                                            Direct Bank Transfer
+                                            </button>
+                                        </h2>
+                                        <div id="bankOne" class="accordion-collapse collapse show" aria-labelledby="checkoutOne" data-bs-parent="#checkoutAccordion">
+                                            <div class="accordion-body">
+                                             <p>Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order won’t be shipped until the funds have cleared in our account.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="paypalThree">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#paypal" aria-expanded="false" aria-controls="paypal">
+                                            PayPal
+                                            </button>
+                                        </h2>
+                                        <div id="paypal" class="accordion-collapse collapse" aria-labelledby="paypalThree" data-bs-parent="#checkoutAccordion">
+                                            <div class="accordion-body">
+                                                <p>Pay via PayPal; you can pay with your credit card if you don’t have a
+                                                PayPal account.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div id="rzp-button1" class="order-button-payment mt-20">
+                                        <button type="submit" class="tp-btn-h1">Place order</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+        <!-- checkout-area-end -->
+
+         <!-- cta-area-start -->
+        {% include 'includes/cta-area.html' %}
+        <!-- cta-area-end -->
+
+
+<script>
+    var item_amounts = {{cart_total_amount}};
+    var tax = {{tax}};
+    var packing_cost = {{packing_cost}};
+    var total = tax + packing_cost;
+
+    var coupon_discount = {{coupon.discount}}
+    console.log(coupon_discount)
+    if(coupon_discount){
+        if(item_amounts < 500){
+            cal_discount = item_amounts - (item_amounts * coupon_discount / 100) + total + 120
+            document.getElementById("total").innerHTML = "₹" + " " + cal_discount.toFixed()
+        }
+        else{
+            cal_discount = item_amounts - (item_amounts * coupon_discount / 100) + total
+            document.getElementById("total1").innerHTML = "₹" + " " + cal_discount.toFixed()
+        }
+    }
+</script>
+
+{% endblock %}
