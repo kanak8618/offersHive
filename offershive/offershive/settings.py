@@ -190,6 +190,6 @@ LOGOUT_REDIRECT_URL = 'home'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'codepythonix@gmail.com'
-EMAIL_HOST_PASSWORD = 'zbhudnetayndrqvy'
+EMAIL_HOST_USER = 'Email Id'
+EMAIL_HOST_PASSWORD = 'Host Password of Email'
 
